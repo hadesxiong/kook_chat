@@ -25,6 +25,8 @@ async def handleChallenge(form_data:dict):
     
     decrypt_data = kook_encryptor.aes_decrypt(form_data.get('encrypt'))
     print(decrypt_data)
+    print(type(decrypt_data))
+    print(decrypt_data.get('d'))
 
     try:
         challenge = decrypt_data.get('d').get('challenge')
