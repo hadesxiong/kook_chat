@@ -24,6 +24,7 @@ async def handleChallenge(form_data:dict):
     kook_encryptor = CookEncrypt(settings.KOOK_KEY)
     
     decrypt_str = kook_encryptor.aes_decrypt(form_data.get('encrypt'))
+    print(decrypt_str)
     decrypt_data = json.loads(decrypt_str)
     print(decrypt_data)
 
