@@ -1,5 +1,5 @@
 # coding=utf8
-import zlib,json
+import zlib,json,re
 
 from fastapi import APIRouter
 
@@ -22,19 +22,21 @@ async def handleChallenge(form_data:dict):
     decompress_data = form_data
 
     kook_encryptor = CookEncrypt(settings.KOOK_KEY)
-    
     decrypt_str = kook_encryptor.aes_decrypt(form_data.get('encrypt'))
-    print(decrypt_str)
-    decrypt_data = json.loads(decrypt_str)
-    print(decrypt_data)
-
-    print(type(decrypt_data))
-    print(decrypt_data.get('d'))
-
-    try:
-        challenge = decrypt_data.get('d').get('challenge')
-        return {'challenge': challenge}
+    re_match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', decrypt_str)
     
-    except:
-        print('fail')
-        return {'challenge':'aaa'}
+    if re_match:
+        decrypt_str = re_match.group(0)
+        print(decrypt_str)
+        decrypt_data = json.loads(decrypt_str)
+        
+        try:
+            challenge = decrypt_data.get('d').get('challenge')
+            return {'challenge': challenge}
+        
+        except:
+            print('fail')
+            return {'challenge': 'fail'}
+
+    else:
+        return 1
