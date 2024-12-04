@@ -1,5 +1,5 @@
 # coding=utf8
-import zlib
+import zlib,json
 
 from fastapi import APIRouter
 
@@ -23,8 +23,10 @@ async def handleChallenge(form_data:dict):
 
     kook_encryptor = CookEncrypt(settings.KOOK_KEY)
     
-    decrypt_data = kook_encryptor.aes_decrypt(form_data.get('encrypt'))
+    decrypt_str = kook_encryptor.aes_decrypt(form_data.get('encrypt'))
+    decrypt_data = json.loads(decrypt_data)
     print(decrypt_data)
+
     print(type(decrypt_data))
     print(decrypt_data.get('d'))
 
