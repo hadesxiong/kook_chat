@@ -10,6 +10,9 @@ class Settings(BaseSettings):
     PROJECT_NAME: str
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
 
+    # KOOK_CONFIG
+    KOOK_KEY: str
+
     @field_validator("BACKEND_CORS_ORIGINS", check_fields='before')
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
         if isinstance(v, str) and not v.startswith("["):

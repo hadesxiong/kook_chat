@@ -3,6 +3,9 @@ import zlib
 
 from fastapi import APIRouter
 
+from app.utils.decrypt import CookEncrypt
+from app.core.config import settings
+
 # 定义路由
 base_rt = APIRouter(prefix='/base', tags=['base'])
 
@@ -18,10 +21,14 @@ async def handleChallenge(form_data:dict):
 
     decompress_data = form_data
 
+    kook_encryptor = CookEncrypt(settings.KOOK_KEY)
+    
+    decrypt_data = kook_encryptor.aes_decrypt(form_data.get('encrypt'))
+
     try:
-        challenge = decompress_data.get('d').get('challenge')
+        challenge = decrypt_data.get('d').get('challenge')
         return {'challenge': challenge}
     
     except:
-        print('faile')
+        print('fail')
         return {'challenge':'aaa'}
