@@ -15,10 +15,12 @@ base_rt = APIRouter(prefix='/base', tags=['base'])
 async def handleChallenge(request:Request):
 
     body = await request.body()
-    decompress_data = zlib.decompress(body)
+    decompress_str = zlib.decompress(body)
+    print(decompress_str)
+    decrypt_data = json.loads(decrypt_str)
 
     kook_encryptor = CookEncrypt(settings.KOOK_KEY)
-    decrypt_str = kook_encryptor.aes_decrypt(decompress_data.get('encrypt'))
+    decrypt_str = kook_encryptor.aes_decrypt(decrypt_data.get('encrypt'))
     # re_match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', decrypt_str)
     
     # if re_match:
@@ -37,6 +39,6 @@ async def handleChallenge(request:Request):
     # else:
     #     return 1
     
-    decrypt_data = json.loads(decrypt_str)
+
     challenge = decrypt_data.get('d').get('challenge')
     return {'challenge': challenge}
