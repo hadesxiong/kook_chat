@@ -17,10 +17,10 @@ async def handleChallenge(request:Request):
     body = await request.body()
     decompress_str = zlib.decompress(body).decode('utf-8')
     print(decompress_str)
-    decrypt_data = json.loads(decrypt_str)
+    decompress_data = json.loads(decompress_str)
 
     kook_encryptor = CookEncrypt(settings.KOOK_KEY)
-    decrypt_str = kook_encryptor.aes_decrypt(decrypt_data.get('encrypt'))
+    decrypt_data = kook_encryptor.aes_decrypt(decompress_data.get('encrypt'))
     # re_match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', decrypt_str)
     
     # if re_match:
