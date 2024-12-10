@@ -15,7 +15,7 @@ base_rt = APIRouter(prefix='/base', tags=['base'])
 async def handleChallenge(request:Request):
 
     body = await request.body()
-    decompress_str = zlib.decompress(body).decode('uft-8')
+    decompress_str = zlib.decompress(body).decode('utf-8')
     print(decompress_str)
     decrypt_data = json.loads(decrypt_str)
 
