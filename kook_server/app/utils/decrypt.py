@@ -17,4 +17,5 @@ class CookEncrypt:
         str = base64.b64decode(content)
         iv = str [0:16]
         cipher = AES.new(self.key, AES.MODE_CBC, iv)
-        return cipher.decrypt(base64.b64decode(str[16:])).decode('utf-8')
+        decrypted = cipher.decrypt(base64.b64decode(str[16:]))
+        return decrypted[:-decrypted[-1]].decode('utf-8')
