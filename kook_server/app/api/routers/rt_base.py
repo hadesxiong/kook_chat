@@ -20,7 +20,7 @@ async def handleChallenge(request:Request):
     decompress_data = json.loads(decompress_str)
 
     kook_encryptor = CookEncrypt(settings.KOOK_KEY)
-    decrypt_data = kook_encryptor.aes_decrypt(decompress_data.get('encrypt'))
+    decrypt_str = kook_encryptor.aes_decrypt(decompress_data.get('encrypt'))
     # re_match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', decrypt_str)
     
     # if re_match:
@@ -38,7 +38,9 @@ async def handleChallenge(request:Request):
 
     # else:
     #     return 1
-    
+
+    print(decrypt_str)
+    decrypt_data = json.loads(decrypt_str)    
 
     challenge = decrypt_data.get('d').get('challenge')
     return {'challenge': challenge}
